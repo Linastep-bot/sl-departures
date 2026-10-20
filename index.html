@@ -1,0 +1,41 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font: 14px system-ui; margin: 8px; background: #111; color: #eee; }
+  h1 { font-size: 15px; margin: 0 0 6px; }
+  table { width: 100%; border-collapse: collapse; }
+  td { padding: 3px 4px; border-bottom: 1px solid #333; }
+  td:first-child { font-weight: 700; width: 3em; }
+  td:last-child { text-align: right; white-space: nowrap; }
+  #err { color: #f66; }
+</style>
+<h1 id="title">Departures</h1>
+<table id="rows"></table>
+<div id="err"></div>
+<script>
+const SITE_ID = 3400;            // replace with your site id
+const PARAMS = "?forecast=60";   // e.g. "?transport=METRO&forecast=60"
+const MAX_ROWS = 8;
+
+async function load() {
+  try {
+    const r = await fetch(`https://transport.integration.sl.se/v1/sites/${SITE_ID}/departures${PARAMS}`);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const data = await r.json();
+    const t = document.getElementById("rows");
+    t.replaceChildren();
+    data.departures.slice(0, MAX_ROWS).forEach(d => {
+      const tr = t.insertRow();
+      tr.insertCell().textContent = d.line.designation;
+      tr.insertCell().textContent = d.destination;
+      tr.insertCell().textContent = d.display;
+    });
+    document.getElementById("err").textContent = "";
+  } catch (e) {
+    document.getElementById("err").textContent = "Failed: " + e.message;
+  }
+}
+load();
+setInterval(load, 30000);
+</script>
