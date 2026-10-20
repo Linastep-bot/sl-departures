@@ -18,7 +18,7 @@
 const STOP_NAME = "Karolinska sjukhuset norra";
 const SITE_ID = 3400;            // replace with your site id
 const PARAMS = "?forecast=60";   // e.g. "?transport=METRO&forecast=60"
-const MAX_ROWS = 15;
+const MAX_ROWS = 13;
 
 document.title = STOP_NAME;
 document.getElementById("title").textContent = STOP_NAME;
@@ -38,11 +38,11 @@ async function load() {
     });
     document.getElementById("err").textContent = "";
     document.getElementById("updated").textContent = 
-      "Last updated: " + new Date().toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      "Last updated: " + new Date().toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
   } catch (e) {
     document.getElementById("err").textContent = "Failed: " + e.message;
   }
 }
 load();
-setInterval(load, 30000);
+setInterval(load, 60000);
 </script>
