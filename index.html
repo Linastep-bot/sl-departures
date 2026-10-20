@@ -13,10 +13,15 @@
 <h1 id="title">Departures</h1>
 <table id="rows"></table>
 <div id="err"></div>
+<div id="updated">Last updated: –</div>
 <script>
+const STOP_NAME = "Karolinska sjukhuset norra";
 const SITE_ID = 3400;            // replace with your site id
 const PARAMS = "?forecast=60";   // e.g. "?transport=METRO&forecast=60"
-const MAX_ROWS = 8;
+const MAX_ROWS = 15;
+
+document.title = STOP_NAME;
+document.getElementById("title").textContent = STOP_NAME;
 
 async function load() {
   try {
@@ -32,6 +37,8 @@ async function load() {
       tr.insertCell().textContent = d.display;
     });
     document.getElementById("err").textContent = "";
+    document.getElementById("updated").textContent = 
+      "Last updated: " + new Date().toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   } catch (e) {
     document.getElementById("err").textContent = "Failed: " + e.message;
   }
